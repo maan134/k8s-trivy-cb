@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-production-deployment
+  labels:
+    app: my-app
+    environment: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+        environment: production
+    spec:
+      containers:
+      - name: my-app-container
+        image: your-registry/my-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: database-url
+        # Add more environment variables as needed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-production-service
+spec:
+  selector:
+    app: my-app
+    environment: production
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer  # Change to ClusterIP or NodePort based on your needs

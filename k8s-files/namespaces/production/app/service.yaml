@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-production-service
+  labels:
+    app: my-app
+    environment: production
+spec:
+  selector:
+    app: my-app
+    environment: production
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer  # Change to ClusterIP or NodePort based on your needs
