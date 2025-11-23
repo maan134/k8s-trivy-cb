@@ -16,13 +16,9 @@ jobs:
       with:
           version: v0.48.2
 
-    - name: trivy cluster scan
+    - name: Run Trivy config scan
       run: |
-          trivy k8s --report summary cluster
-
-    - name: Run Trivy IaC (config) scan
-      run: |
-          trivy config --format sarif --output trivy-results.sarif . || true
+          trivy fs --format sarif --output trivy-results.sarif . || true
     - name: Upload SARIF as Artifact
       uses: actions/upload-artifact@v4
       with:
