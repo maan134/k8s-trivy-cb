@@ -21,10 +21,10 @@ jobs:
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'fs'
+        scanner: misconfig, vuln, secrets
         ignore-unfixed: true
         format: 'sarif'
         output: 'trivy-results.sarif'
-        severity: 'CRITICAL'
         skip-setup-trivy: true
             
     - name: Send Trivy report to external server
