@@ -19,7 +19,7 @@ jobs:
     - name: Run Trivy config scan
       continue-on-error: true
       run: |
-          trivy fs . --format sarif --output trivy-results.sarif
+          trivy config . --format sarif --output trivy-results.sarif
     - name: Upload SARIF as Artifact
       uses: actions/upload-artifact@v4
       with:
