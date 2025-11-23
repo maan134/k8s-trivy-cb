@@ -17,9 +17,9 @@ jobs:
           version: v0.48.2
 
     - name: Run Trivy config scan
+      continue-on-error: true
       run: |
-          trivy fs ~/src/github.com/maan134/k8s-trivy-cb/tree/main/k8s-files
-          trivy config --format sarif --output trivy-results.sarif . || true
+          trivy fs . --format sarif --output trivy-results.sarif
     - name: Upload SARIF as Artifact
       uses: actions/upload-artifact@v4
       with:
