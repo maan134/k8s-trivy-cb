@@ -16,6 +16,10 @@ jobs:
       with:
           version: v0.48.2
 
+    - name: trivy cluster scan
+      run: |
+          trivy k8s --report summary cluster
+
     - name: Run Trivy IaC (config) scan
       run: |
           trivy config --format sarif --output trivy-results.sarif . || true
